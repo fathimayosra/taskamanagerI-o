@@ -1,0 +1,52 @@
+import os
+class TaskListManager:
+    def __init__(self,filename):
+        self.filename =filename
+        self.tasks = self.read_tasks_from_file()
+    def read_task_from_file(self):
+        try:
+            with open(self.filename,'r') as file:
+                return file.readlines()
+        except FileNotFoundError:
+            return []
+    def write_tasks_to_file(self):
+        with open(self.filename,'w') as file:
+            file.writelines(self.tasks)
+    def add_task(self,task):
+        self.tasks.append(task +"\n")
+        self.write_tasks_to_file()
+
+    def remove_task(self,task_number):
+        try:
+            del self.tasks[task_number - 1]
+            self.write_tasks_to_file()
+        except IndexError:
+            print("Invalid task number.")
+    def view_tasks(self):
+        for i, task in enumerate(self.tasks, start=1):
+           print(f"{i}.{task.strip()}")
+
+def main():
+    manager = TaskListManager("tasks.txt")
+    while True:
+        print("1.Add task")
+        print("2.Remove task")
+        print("3.View tasks")
+        print("4.Quit")
+        choice = input("Choose an option: ")
+        if choice =="1":
+            task = input("Choose an option:")
+            manager.add_task(task)
+        elif choice =="2":
+            task_number = int(input("Enter task number to remove:"))
+            manager.remove_task(task_number)
+        elif choice =="3":
+            manager.view_task()
+        elif choice =="4":
+            break
+        else:
+            print("Invalid choice.Please try again.")
+
+
+if __name__ == "__main__":
+       main()     
